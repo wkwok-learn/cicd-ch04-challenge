@@ -50,6 +50,7 @@ jobs:
         
   production:
     needs: test-staging
+    environment: Production
     runs-on: ubuntu-latest
     steps:
       - run: |
