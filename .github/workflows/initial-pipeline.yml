@@ -14,6 +14,7 @@ jobs:
       - run: echo "- Lint the code and run unit tests"
         
   build:
+    needs: [integration]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,11 +28,13 @@ jobs:
       - run: echo "- Simulate and test the artifact"
 
   development:
+    needs: [test-artifact]
     runs-on: ubuntu-latest
     steps:
       - run: echo "- Auto-deploy the artifact to the development environment"
         
   staging:
+    needs: [development]
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -46,7 +49,7 @@ jobs:
       - run: echo "- Test the staging environment"
         
   production:
-    needs: staging
+    needs: test-staging
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -56,6 +59,7 @@ jobs:
           echo "- Deploy the artifact to the production environment"
 
   test-production:
+    needs: production
     runs-on: ubuntu-latest
     steps:
       - run: echo "- Test the artifact in the production environment"
